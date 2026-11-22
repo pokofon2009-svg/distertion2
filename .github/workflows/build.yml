@@ -1,0 +1,23 @@
+name: Build VST3
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure
+        run: cmake -S SimpleDistortion -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Upload plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: SimpleDistortion-VST3-Windows
+          path: build/SimpleDistortion_artefacts/Release/VST3/
